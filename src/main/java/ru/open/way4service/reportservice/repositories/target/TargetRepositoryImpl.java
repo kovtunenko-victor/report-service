@@ -1,4 +1,4 @@
-package ru.open.way4service.reportservice.repositories.reports;
+package ru.open.way4service.reportservice.repositories.target;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,8 +12,8 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ReportsRepository {
-    @PersistenceContext(unitName = "reportsEntityManager")
+public class TargetRepositoryImpl implements TargetRepository {
+    @PersistenceContext(unitName = "targetEntityManager")
     private EntityManager entityManager;
     
     public void test() {

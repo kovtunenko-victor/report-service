@@ -23,46 +23,46 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "reportsEntityManager"
-                     , transactionManagerRef = "reportsTransactionManager"
-                     , basePackages = "ru.open.way4service.reportservice.repositories.reports")
+@EnableJpaRepositories(entityManagerFactoryRef = "targetEntityManager"
+                     , transactionManagerRef = "targetTransactionManager"
+                     , basePackages = "ru.open.way4service.reportservice.repositories.target")
 
-public class ReportsDBConfiguration {
+public class TargetDBConfiguration {
     private final PersistenceUnitManager persistenceUnitManager;
 
-    public ReportsDBConfiguration(ObjectProvider<PersistenceUnitManager> persistenceUnitManager) {
+    public TargetDBConfiguration(ObjectProvider<PersistenceUnitManager> persistenceUnitManager) {
         this.persistenceUnitManager = persistenceUnitManager.getIfAvailable();
     }
 
     @Bean
-    @ConfigurationProperties("reports.jpa")
-    public JpaProperties reportsJpaProperties() {
+    @ConfigurationProperties("target.jpa")
+    public JpaProperties targetJpaProperties() {
         return new JpaProperties();
     }
 
     @Bean
-    @ConfigurationProperties("reports.datasource")
-    public DataSourceProperties reportsDataSourceProperties() {
+    @ConfigurationProperties("target.datasource")
+    public DataSourceProperties targetDataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "reports.datasource.properties")
-    public HikariDataSource reportsDataSource() {
-        return reportsDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    @ConfigurationProperties(prefix = "target.datasource.properties")
+    public HikariDataSource targetDataSource() {
+        return targetDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
     @Bean
-    @PersistenceContext(unitName = "reportsEntityManager")
-    public LocalContainerEntityManagerFactoryBean reportsEntityManager(JpaProperties reportsJpaProperties) {
-        EntityManagerFactoryBuilder builder = createEntityManagerFactoryBuilder(reportsJpaProperties);
-        return builder.dataSource(reportsDataSource()).packages("ru.open.way4service.reportservice.repositories.reports").persistenceUnit("reportsDs").build();
+    @PersistenceContext(unitName = "targetEntityManager")
+    public LocalContainerEntityManagerFactoryBean targetEntityManager(JpaProperties targetJpaProperties) {
+        EntityManagerFactoryBuilder builder = createEntityManagerFactoryBuilder(targetJpaProperties);
+        return builder.dataSource(targetDataSource()).packages("ru.open.way4service.reportservice.models").persistenceUnit("targetDs").build();
     }
 
     @Bean
-    @PersistenceContext(unitName = "reportsTransactionManager")
-    public JpaTransactionManager reportsTransactionManager(EntityManagerFactory reportsEntityManager) {
-        return new JpaTransactionManager(reportsEntityManager);
+    @PersistenceContext(unitName = "targetTransactionManager")
+    public JpaTransactionManager targetTransactionManager(EntityManagerFactory targetEntityManager) {
+        return new JpaTransactionManager(targetEntityManager);
     }
 
     private EntityManagerFactoryBuilder createEntityManagerFactoryBuilder(JpaProperties jpaProperties) {
@@ -74,9 +74,11 @@ public class ReportsDBConfiguration {
     private JpaVendorAdapter createJpaVendorAdapter(JpaProperties jpaProperties) {
         AbstractJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setShowSql(jpaProperties.isShowSql());
+        
         if (jpaProperties.getDatabase() != null) {
             adapter.setDatabase(jpaProperties.getDatabase());
         }
+        
         if (jpaProperties.getDatabasePlatform() != null) {
             adapter.setDatabasePlatform(jpaProperties.getDatabasePlatform());
         }

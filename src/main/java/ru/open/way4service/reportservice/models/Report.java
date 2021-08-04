@@ -1,10 +1,16 @@
 package ru.open.way4service.reportservice.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.v3.oas.annotations.Hidden;
@@ -13,7 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "report")
+@Table(name = "reports")
 @Getter
 @Setter
 
@@ -24,14 +30,28 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private long reportId;
+    
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "virtualaizer_prop_id")
+    private VirtualaizerProperties virtualaizerProps;
+    
+    @Column(name = "title")
     private String title;
+    
+    @Column(name = "tamplate_path")
     private String tamplatePath;
+    
+    @Column(name = "export_path")
     private String exportPath;
+    
+    @Column(name = "export_type")
     private String exportType;
-    private String virtualaizerType;
-    private String virtualaizerFilesPath;
-    private String virtualaizerMaxSize;
-    private String virtualaizerBlockSize;
-    private String virtualaizerMinGrowCount;
-    private String virtualaizerCompressionLevel;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "virtualaizer_type")
+    private VirtualaizerTypes virtualaizerType;
+
+    public Report() {
+        
+    }
 }

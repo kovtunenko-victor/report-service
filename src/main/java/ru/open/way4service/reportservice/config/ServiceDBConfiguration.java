@@ -56,7 +56,7 @@ public class ServiceDBConfiguration {
     @PersistenceContext(unitName = "serviceEntityManager")
     public LocalContainerEntityManagerFactoryBean serviceEntityManager(JpaProperties serviceJpaProperties) {
         EntityManagerFactoryBuilder builder = createEntityManagerFactoryBuilder(serviceJpaProperties);
-        return builder.dataSource(serviceDataSource()).packages("ru.open.way4service.reportservice.repositories.service").persistenceUnit("serviceDs").build();
+        return builder.dataSource(serviceDataSource()).packages("ru.open.way4service.reportservice.models").persistenceUnit("serviceDs").build();
     }
 
     @Bean
@@ -74,12 +74,15 @@ public class ServiceDBConfiguration {
     private JpaVendorAdapter createJpaVendorAdapter(JpaProperties jpaProperties) {
         AbstractJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setShowSql(jpaProperties.isShowSql());
+        
         if (jpaProperties.getDatabase() != null) {
             adapter.setDatabase(jpaProperties.getDatabase());
         }
+        
         if (jpaProperties.getDatabasePlatform() != null) {
             adapter.setDatabasePlatform(jpaProperties.getDatabasePlatform());
         }
+        
         adapter.setGenerateDdl(jpaProperties.isGenerateDdl());
         return adapter;
     }
