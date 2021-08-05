@@ -1,9 +1,9 @@
 package ru.open.way4service.reportservice.repositories.service;
 
 import ru.open.way4service.reportservice.errors.ReportServiceException;
-import ru.open.way4service.reportservice.models.Report;
+import ru.open.way4service.reportservice.models.ReportConfig;
 
 public interface ServiceRepository {
-    Report getReportById(long id) throws ReportServiceException;
-    Report getReportByTitle(String title) throws ReportServiceException;
+    ReportConfig getReportById(long id) throws ReportServiceException;
+    ReportConfig getReportByTitle(String title) throws ReportServiceException;
 }

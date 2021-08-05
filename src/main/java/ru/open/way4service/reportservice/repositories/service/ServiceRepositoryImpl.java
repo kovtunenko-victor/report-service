@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import ru.open.way4service.reportservice.errors.ReportServiceException;
-import ru.open.way4service.reportservice.models.Report;
+import ru.open.way4service.reportservice.models.ReportConfig;
 
 @Repository
 public class ServiceRepositoryImpl implements ServiceRepository {
@@ -15,9 +15,9 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     private EntityManager entityManager;
 
     @Override
-    public Report getReportById(long id) throws ReportServiceException {
+    public ReportConfig getReportById(long id) throws ReportServiceException {
         try {
-            TypedQuery<Report> query = entityManager.createQuery("select r from Report r where r.id = ?1", Report.class);
+            TypedQuery<ReportConfig> query = entityManager.createQuery("select r from Report r where r.id = ?1", ReportConfig.class);
             return query.setParameter(1, id).getSingleResult();
         } catch (Exception ex) {
             throw new ReportServiceException("See nested exception", ex);
@@ -25,9 +25,9 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     }
     
     @Override
-    public Report getReportByTitle(String title) throws ReportServiceException {
+    public ReportConfig getReportByTitle(String title) throws ReportServiceException {
         try {
-            TypedQuery<Report> query = entityManager.createQuery("select r from Report r where r.title = ?1", Report.class);
+            TypedQuery<ReportConfig> query = entityManager.createQuery("select r from Report r where r.title = ?1", ReportConfig.class);
             return query.setParameter(1, title).getSingleResult();
         } catch (Exception ex) {
             throw new ReportServiceException("See nested exception", ex);

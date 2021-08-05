@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ru.open.way4service.reportservice.errors.ReportServiceException;
-import ru.open.way4service.reportservice.models.Report;
+import ru.open.way4service.reportservice.models.ReportConfig;
 import ru.open.way4service.reportservice.repositories.service.ServiceRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ public class ServiceRepositoryTest {
 
     @Test
     void methodGetReportByIdShuldReturnReportEntityById() throws ReportServiceException {
-        Report report = serviceRepository.getReportById(1);
+        ReportConfig report = serviceRepository.getReportById(1);
 
         assertThat(report).isNotNull();
         assertThat(report.getReportId()).isEqualTo(1);
@@ -27,7 +27,7 @@ public class ServiceRepositoryTest {
 
     @Test
     void methodGetReportByIdShuldReturnReportEntityByIdWithVirtualaizerProps() throws ReportServiceException {
-        Report report = serviceRepository.getReportById(2);
+        ReportConfig report = serviceRepository.getReportById(2);
 
         assertThat(report).isNotNull();
         assertThat(report.getVirtualaizerProps()).isNotNull();
@@ -47,7 +47,7 @@ public class ServiceRepositoryTest {
 
     @Test
     void methodGetReportByTitleShuldReturnReportEntityById() throws ReportServiceException {
-        Report report = serviceRepository.getReportByTitle("test_report");
+        ReportConfig report = serviceRepository.getReportByTitle("test_report");
 
         assertThat(report).isNotNull();
         assertThat(report.getReportId()).isEqualTo(1);
@@ -55,7 +55,7 @@ public class ServiceRepositoryTest {
 
     @Test
     void methodGetReportByTitleShuldReturnReportEntityByIdWithVirtualaizerProps() throws ReportServiceException {
-        Report report = serviceRepository.getReportByTitle("test_report2");
+        ReportConfig report = serviceRepository.getReportByTitle("test_report2");
 
         assertThat(report).isNotNull();
         assertThat(report.getVirtualaizerProps()).isNotNull();
