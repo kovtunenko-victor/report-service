@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -34,15 +36,19 @@ public class VirtualaizerProperties {
     private String virtualaizerFilesPath;
     
     @Column(name = "virtualaizer_max_size")
+    @ColumnDefault("200")
     private int virtualaizerMaxSize;
     
     @Column(name = "virtualaizer_block_size")
+    @ColumnDefault("1024")
     private int virtualaizerBlockSize;
     
     @Column(name = "virtualaizer_min_grow_count")
+    @ColumnDefault("100")
     private int virtualaizerMinGrowCount;
     
     @Column(name = "virtualaizer_compression_level")
+    @ColumnDefault("5")
     private int virtualaizerCompressionLevel;
     
     @OneToMany(mappedBy = "virtualaizerProps")
@@ -52,23 +58,25 @@ public class VirtualaizerProperties {
         
     }
     
-    public File getObjectVirtualaizerFilesPath(ReportConfig reportConfig) throws ReportServiceException {
-        File targetDirectory;
-        
-        if(virtualaizerFilesPath != null) {
-            targetDirectory = new File(virtualaizerFilesPath + "\\" + reportConfig.getObjectTamplateFilePath().getName());
+    public static class Utils { 
+        public static File getObjectVirtualaizerFilesPath(String virtualaizerFilesPath, File tamplateFilePath) throws ReportServiceException {
+            File targetDirectory;
             
-            if(!targetDirectory.exists()) {
-                targetDirectory.mkdir();
+            if(virtualaizerFilesPath != null) {
+                targetDirectory = new File(virtualaizerFilesPath + "\\" + tamplateFilePath.getName());
+                
+                if(!targetDirectory.exists()) {
+                    targetDirectory.mkdir();
+                }
+            }  else {
+                targetDirectory = new File(tamplateFilePath.getPath()+ "\\virtualaizerData");
+                
+                if(!targetDirectory.exists()) {
+                    targetDirectory.mkdir();
+                }
             }
-        }  else {
-            targetDirectory = new File(reportConfig.getObjectTamplateFilePath().getPath()+ "\\virtualaizerData");
             
-            if(!targetDirectory.exists()) {
-                targetDirectory.mkdir();
-            }
+            return targetDirectory;
         }
-        
-        return targetDirectory;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ru.open.way4service.reportservice.errors.ReportServiceException;
 import ru.open.way4service.reportservice.models.ReportConfig;
+import ru.open.way4service.reportservice.models.VirtualaizerTypes;
 import ru.open.way4service.reportservice.repositories.service.ServiceRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,11 +19,14 @@ public class ServiceRepositoryTest {
     ServiceRepository serviceRepository;
 
     @Test
-    void methodGetReportByIdShuldReturnReportEntityById() throws ReportServiceException {
+    void methodGetReportByIdShuldReturnReportEntityByIdWithVirtualaizerTypesEqNotUse() throws ReportServiceException {
         ReportConfig report = serviceRepository.getReportById(1);
 
         assertThat(report).isNotNull();
         assertThat(report.getReportId()).isEqualTo(1);
+        if (report.getVirtualaizerType() != VirtualaizerTypes.NOT_USE) {
+            assertThat(report.getVirtualaizerProps()).isNotNull();
+        }
     }
 
     @Test
@@ -30,15 +34,18 @@ public class ServiceRepositoryTest {
         ReportConfig report = serviceRepository.getReportById(2);
 
         assertThat(report).isNotNull();
-        assertThat(report.getVirtualaizerProps()).isNotNull();
+        assertThat(report.getReportId()).isEqualTo(2);
+        if (report.getVirtualaizerType() != VirtualaizerTypes.NOT_USE) {
+            assertThat(report.getVirtualaizerProps()).isNotNull();
+        }
     }
-    
+
     @Test
     void methodGetReportByIdShuldRaiseExceptionWhenIdNotFound() throws ReportServiceException {
         Throwable thrown = catchThrowable(() -> {
             serviceRepository.getReportById(-1);
         });
-        
+
         assertThat(thrown).isInstanceOf(ReportServiceException.class);
         assertThat(thrown.getMessage()).isEqualTo("See nested exception");
         assertThat(thrown.getCause()).isNotNull();
@@ -46,11 +53,14 @@ public class ServiceRepositoryTest {
     }
 
     @Test
-    void methodGetReportByTitleShuldReturnReportEntityById() throws ReportServiceException {
-        ReportConfig report = serviceRepository.getReportByTitle("test_report");
+    void methodGetReportByTitleShuldReturnReportEntityByIdWithVirtualaizerTypesEqNotUse() throws ReportServiceException {
+        ReportConfig report = serviceRepository.getReportByTitle("test_report1");
 
         assertThat(report).isNotNull();
-        assertThat(report.getReportId()).isEqualTo(1);
+        assertThat(report.getTitle()).isEqualTo("test_report1");
+        if (report.getVirtualaizerType() != VirtualaizerTypes.NOT_USE) {
+            assertThat(report.getVirtualaizerProps()).isNotNull();
+        }
     }
 
     @Test
@@ -58,7 +68,10 @@ public class ServiceRepositoryTest {
         ReportConfig report = serviceRepository.getReportByTitle("test_report2");
 
         assertThat(report).isNotNull();
-        assertThat(report.getVirtualaizerProps()).isNotNull();
+        assertThat(report.getTitle()).isEqualTo("test_report2");
+        if (report.getVirtualaizerType() != VirtualaizerTypes.NOT_USE) {
+            assertThat(report.getVirtualaizerProps()).isNotNull();
+        }
     }
 
     @Test
@@ -66,19 +79,19 @@ public class ServiceRepositoryTest {
         Throwable thrown = catchThrowable(() -> {
             serviceRepository.getReportByTitle("test_report-1");
         });
-        
+
         assertThat(thrown).isInstanceOf(ReportServiceException.class);
         assertThat(thrown.getMessage()).isEqualTo("See nested exception");
         assertThat(thrown.getCause()).isNotNull();
         assertThat(thrown.getCause().getMessage()).isEqualTo("No entity found for query");
     }
-    
+
     @Test
     void methodGetReportByTitleShuldRaiseExceptionWhenTitleDuplicate() throws ReportServiceException {
         Throwable thrown = catchThrowable(() -> {
             serviceRepository.getReportByTitle("test_report3");
         });
-        
+
         assertThat(thrown).isInstanceOf(ReportServiceException.class);
         assertThat(thrown.getMessage()).isEqualTo("See nested exception");
         assertThat(thrown.getCause()).isNotNull();

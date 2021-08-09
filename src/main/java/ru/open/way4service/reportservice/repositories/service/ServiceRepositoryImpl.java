@@ -17,7 +17,7 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     @Override
     public ReportConfig getReportById(long id) throws ReportServiceException {
         try {
-            TypedQuery<ReportConfig> query = entityManager.createQuery("select r from Report r where r.id = ?1", ReportConfig.class);
+            TypedQuery<ReportConfig> query = entityManager.createQuery("select r from ReportConfig r where r.id = ?1", ReportConfig.class);
             return query.setParameter(1, id).getSingleResult();
         } catch (Exception ex) {
             throw new ReportServiceException("See nested exception", ex);
@@ -27,7 +27,7 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     @Override
     public ReportConfig getReportByTitle(String title) throws ReportServiceException {
         try {
-            TypedQuery<ReportConfig> query = entityManager.createQuery("select r from Report r where r.title = ?1", ReportConfig.class);
+            TypedQuery<ReportConfig> query = entityManager.createQuery("select r from ReportConfig r where r.title = ?1", ReportConfig.class);
             return query.setParameter(1, title).getSingleResult();
         } catch (Exception ex) {
             throw new ReportServiceException("See nested exception", ex);

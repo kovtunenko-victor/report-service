@@ -59,36 +59,38 @@ public class ReportConfig {
         
     }
     
-    public File getObjectTamplateFilePath() throws ReportServiceException  {
-        if(tamplateFilePath != null) {
-            return new File(tamplateFilePath);
-        } else {
-            throw new ReportServiceException("Tamplate file path is null");
-        }
-    }
-    
-    public File getObjectExportPath() throws ReportServiceException {
-        if(exportFilePath != null) {
-            return getUniqueFileName(new File(exportFilePath));
-        } else {
-            throw new ReportServiceException("Export file path is null");
-        }
-    }
-    
-    private File getUniqueFileName(File exportFilePath) {
-        String[] splitedFileName = exportFilePath.getName().split("\\.");
-        String extension = splitedFileName[splitedFileName.length - 1];
-        
-        StringBuilder resultFileName = new StringBuilder();
-        resultFileName.append(exportFilePath.getParent()).append("\\");
-        
-        for(int i = 0; i < splitedFileName.length - 1; i++) {
-            resultFileName.append(splitedFileName[i]).append(".");
+    public static class Utils {
+        public static File getObjectTamplateFilePath(String tamplateFilePath) throws ReportServiceException  {
+            if(tamplateFilePath != null) {
+                return new File(tamplateFilePath);
+            } else {
+                throw new ReportServiceException("Tamplate file path is null");
+            }
         }
         
-        resultFileName.deleteCharAt(resultFileName.lastIndexOf("."));
-        resultFileName.append("_").append(System.currentTimeMillis()).append(".").append(extension);
+        public static File getObjectExportFilePath(String exportFilePath) throws ReportServiceException {
+            if(exportFilePath != null) {
+                return getUniqueFileName(new File(exportFilePath));
+            } else {
+                throw new ReportServiceException("Export file path is null");
+            }
+        }
         
-        return new File(exportFilePath.getParent() + "\\" + resultFileName.toString());
+        private static File getUniqueFileName(File exportFilePath) {
+            String[] splitedFileName = exportFilePath.getName().split("\\.");
+            String extension = splitedFileName[splitedFileName.length - 1];
+            
+            StringBuilder resultFileName = new StringBuilder();
+            resultFileName.append(exportFilePath.getParent()).append("\\");
+            
+            for(int i = 0; i < splitedFileName.length - 1; i++) {
+                resultFileName.append(splitedFileName[i]).append(".");
+            }
+            
+            resultFileName.deleteCharAt(resultFileName.lastIndexOf("."));
+            resultFileName.append("_").append(System.currentTimeMillis()).append(".").append(extension);
+            
+            return new File(resultFileName.toString());
+        }
     }
 }

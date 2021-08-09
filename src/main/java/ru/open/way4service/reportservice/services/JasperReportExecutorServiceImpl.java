@@ -1,6 +1,8 @@
 package ru.open.way4service.reportservice.services;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,86 +32,40 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import ru.open.way4service.reportservice.errors.ReportServiceException;
 import ru.open.way4service.reportservice.models.ExportReportTypes;
 import ru.open.way4service.reportservice.models.ReportConfig;
+import ru.open.way4service.reportservice.models.VirtualaizerProperties;
 import ru.open.way4service.reportservice.models.VirtualaizerTypes;
 import ru.open.way4service.reportservice.repositories.target.TargetRepository;
 
-@Service
+@Service("JasperReportExecutor")
 public class JasperReportExecutorServiceImpl implements ReportExecutorService {
     @Autowired
     TargetRepository targetRepository;
-    
+
     @Override
     @Async("taskExecutor")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void executeReport(ReportConfig reportConfig, Map<String, Object> properties) throws ReportServiceException {
         Map<String, Object> localProperties = new HashMap<>(properties);
-        getJasperVirtualizer(reportConfig, localProperties);
-        JasperPrint jasperPrint = getJasperPrint(reportConfig, localProperties);
-        exportJasperReport(reportConfig, jasperPrint);
-    }
 
-    private JasperReport loadJasperReport(File tamplateFilePath) throws ReportServiceException {
         try {
-            return (JasperReport) JRLoader.loadObject(tamplateFilePath);
-        } catch (JRException ex) {
-            throw new ReportServiceException("See nested exception", ex);
-        }
-    }
-
-    private void getJasperVirtualizer(ReportConfig reportConfig, Map<String, Object> properties)
-            throws ReportServiceException {
-        if (!reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.NOT_USE)) {
-            JRVirtualizer virtualaizer = null;
-            
-            String virtualaizerFilesPath = reportConfig.getVirtualaizerProps().getObjectVirtualaizerFilesPath(reportConfig).getPath();
-            int maxSize = reportConfig.getVirtualaizerProps().getVirtualaizerMaxSize();
-            int blockSize = reportConfig.getVirtualaizerProps().getVirtualaizerBlockSize();
-            int minGrowCount = reportConfig.getVirtualaizerProps().getVirtualaizerMinGrowCount();
-            int compressionLevel = reportConfig.getVirtualaizerProps().getVirtualaizerCompressionLevel();
-            
-            if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.FILE)) {
-                virtualaizer = new JRFileVirtualizer(maxSize, virtualaizerFilesPath);
-            }
-            if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.SWAP)) {
-                virtualaizer = new JRSwapFileVirtualizer(maxSize,
-                        new JRSwapFile(virtualaizerFilesPath, blockSize, minGrowCount));
-            }
-            if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.GZIP)) {
-                virtualaizer = new JRGzipVirtualizer(maxSize);
-            }
-            if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.SWAP_GZIP)) {
-                virtualaizer = new JRSwapFileVirtualizer(maxSize,
-                        new JRSwapFile(virtualaizerFilesPath, blockSize, minGrowCount), true,
-                        new DeflateStreamCompression(compressionLevel));
-            }
-            if (virtualaizer == null) {
-                throw new ReportServiceException("Virtualaizer is null");
-            }
-
-            properties.put(JRParameter.REPORT_VIRTUALIZER, virtualaizer);
-        }
-    }
-
-    private JasperPrint getJasperPrint(ReportConfig reportConfig, Map<String, Object> properties)
-            throws ReportServiceException {
-        try {
-            JasperReport report = loadJasperReport(reportConfig.getObjectTamplateFilePath());
-            SimpleJasperReportsContext context = new SimpleJasperReportsContext();
-            JRBaseFiller filler = JRFiller.createFiller(context, report);
-            JasperPrint print = filler.fill(properties, targetRepository.getConnection());
-            return print;
-        } catch (JRException ex) {
-            throw new ReportServiceException("See nested exception", ex);
-        }
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void exportJasperReport(ReportConfig reportConfig, JasperPrint jasperPrint) throws ReportServiceException {
-        try {
+            JasperReportBuilder reportBuilder = new JasperReportBuilder(reportConfig);
+            JRBaseFiller filler = reportBuilder.getJasperFiller();
             JRAbstractExporter exporter = getJasperExporter(reportConfig.getExportType());
-            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(reportConfig.getObjectExportPath()));
-            exporter.exportReport();
+
+            if (reportBuilder.getJasperVirtualaizer() != null) {
+                localProperties.put(JRParameter.REPORT_VIRTUALIZER, reportBuilder.getJasperVirtualaizer());
+            }
+
+            try (Connection connection = targetRepository.getConnection()) {
+                JasperPrint print = filler.fill(localProperties, connection);
+                exporter.setExporterInput(new SimpleExporterInput(print));
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
+                        ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath())));
+                exporter.exportReport();
+            }
         } catch (JRException ex) {
+            throw new ReportServiceException("See nested exception", ex);
+        } catch (SQLException ex) {
             throw new ReportServiceException("See nested exception", ex);
         }
     }
@@ -130,5 +86,88 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
         }
 
         return exporter;
+    }
+
+    private static class JasperReportFileLoader {
+        public static JasperReport loadJasperReport(File tamplateFilePath) throws ReportServiceException {
+            try {
+                return (JasperReport) JRLoader.loadObject(tamplateFilePath);
+            } catch (JRException ex) {
+                throw new ReportServiceException("See nested exception", ex);
+            }
+        }
+    }
+
+    private static class JasperReportBuilder {
+        private final JRBaseFiller jasperFiller;
+        private final JRVirtualizer jasperVirtualaizer;
+
+        public JasperReportBuilder(ReportConfig reportConfig) throws ReportServiceException {
+            jasperFiller = buildJasperFiller(reportConfig);
+            jasperVirtualaizer = buildJasperVirtualizer(reportConfig);
+        }
+
+        private JRVirtualizer buildJasperVirtualizer(ReportConfig reportConfig) throws ReportServiceException {
+            if (!reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.NOT_USE)) {
+                JRVirtualizer virtualaizer = null;
+
+                if (reportConfig.getVirtualaizerProps() == null) {
+                    throw new ReportServiceException("Virtualaizer properties is null");
+                }
+
+                String virtualaizerFilesPath = VirtualaizerProperties.Utils
+                        .getObjectVirtualaizerFilesPath(reportConfig.getVirtualaizerProps().getVirtualaizerFilesPath(),
+                                ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()))
+                        .getPath();
+                int maxSize = reportConfig.getVirtualaizerProps().getVirtualaizerMaxSize();
+                int blockSize = reportConfig.getVirtualaizerProps().getVirtualaizerBlockSize();
+                int minGrowCount = reportConfig.getVirtualaizerProps().getVirtualaizerMinGrowCount();
+                int compressionLevel = reportConfig.getVirtualaizerProps().getVirtualaizerCompressionLevel();
+
+                if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.FILE)) {
+                    virtualaizer = new JRFileVirtualizer(maxSize, virtualaizerFilesPath);
+                }
+                if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.SWAP)) {
+                    virtualaizer = new JRSwapFileVirtualizer(maxSize,
+                            new JRSwapFile(virtualaizerFilesPath, blockSize, minGrowCount));
+                }
+                if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.GZIP)) {
+                    virtualaizer = new JRGzipVirtualizer(maxSize);
+                }
+                if (reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.SWAP_GZIP)) {
+                    virtualaizer = new JRSwapFileVirtualizer(maxSize,
+                            new JRSwapFile(virtualaizerFilesPath, blockSize, minGrowCount), true,
+                            new DeflateStreamCompression(compressionLevel));
+                }
+                if (virtualaizer == null) {
+                    throw new ReportServiceException("Virtualaizer is null");
+                }
+
+                return virtualaizer;
+            } else {
+                return null;
+            }
+        }
+
+        private JRBaseFiller buildJasperFiller(ReportConfig reportConfig) throws ReportServiceException {
+            try {
+                JasperReport report = JasperReportFileLoader.loadJasperReport(
+                        ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()));
+                SimpleJasperReportsContext context = new SimpleJasperReportsContext();
+                JRBaseFiller filler = JRFiller.createFiller(context, report);
+
+                return filler;
+            } catch (JRException ex) {
+                throw new ReportServiceException("See nested exception", ex);
+            }
+        }
+
+        public JRBaseFiller getJasperFiller() {
+            return jasperFiller;
+        }
+
+        public JRVirtualizer getJasperVirtualaizer() {
+            return jasperVirtualaizer;
+        }
     }
 }

@@ -28,11 +28,14 @@ public class TargetRepositoryTest {
     @Test
     void methodGetConnectionShuldReturnNotNullConnectionAndExecTestQuery() throws ReportServiceException, SQLException {
         Connection connect = targetRepository.getConnection();
-        String sql = "select 1 as test from dual";
+        String sql = "select 'test message' as test from dual";
         Statement statement = connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
 
-        resultSet.next();
+        if(resultSet.next()) {
+            String result = resultSet.getString("test");
+            assertThat(result).isEqualTo("test message");
+        }
 
         resultSet.close();
         statement.close();
