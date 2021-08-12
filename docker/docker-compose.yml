@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+  report-service:
+    build: ./
+    container_name: report-service
+    restart: always
+    environment:
+      START_POOL_SIZE: 10
+      MAX_POOL_SIZE: 20
+      THREAD_POOL_QUEUE_CAPACITY: 50
+      SERVICE_DB_HOST: db-config:5432
+      SERVICE_DB_NAME: postgres
+      SERVICE_DB_USER: postgres
+      SERVICE_DB_PASS: rsdc_pwd01
+      TARGET_DB_HOST: oracle-db:1521
+      TARGET_DB_SID: xe
+      TARGET_DB_USER: ows
+      TARGET_DB_PASS: 1234
+    ports:
+      - 9991:8080
+    volumes:
+      - $HOME/docker/volumes/report-service/logs:/home/logs
+      - $HOME/docker/volumes/report-service/reports-template:/home/reports-template
+      - $HOME/docker/volumes/report-service/reports:/home/reports
+    depends_on:
+      - db-config
+  db-config:
+    image: postgres
+    container_name: report-service-db-config
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: rsdc_pwd01
+    ports:
+      - 9981:5432
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+      - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+  oracle-db:
+    image: oracleinanutshell/oracle-xe-11g:latest
+    container_name: practical_blackburn
+    restart: always
+    environment: 
+      - ORACLE_ALLOW_REMOTE=true
+    ports:
+      - 9971:1521
