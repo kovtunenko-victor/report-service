@@ -22,3 +22,7 @@
 12.08.2021 18:54:13.627 [main] INFO  r.o.w.r.ReportServiceApplicationTests - No active profile set, falling back to default profiles: default 
 12.08.2021 18:54:33.079 [main] INFO  r.o.w.r.ReportServiceApplicationTests - Started ReportServiceApplicationTests in 20.595 seconds (JVM running for 23.544) 
 12.08.2021 18:54:36.843 [taskExecutor -1] INFO  r.o.w.r.s.JasperReportExecutorServiceImpl - Report id [0] with request number [0] is exported.  
+12.08.2021 18:56:20.022 [main] INFO  r.o.w.r.ReportServiceApplication - Starting ReportServiceApplication using Java 1.8.0_261 on VARVARA-PC with PID 11556 (C:\Users\Варя\eclipse-workspace-ee\report-service\target\classes started by Варя in C:\Users\Варя\eclipse-workspace-ee\report-service) 
+12.08.2021 18:56:20.031 [main] DEBUG r.o.w.r.ReportServiceApplication - Running with Spring Boot v2.5.3, Spring v5.3.9 
+12.08.2021 18:56:20.032 [main] INFO  r.o.w.r.ReportServiceApplication - No active profile set, falling back to default profiles: default 
+12.08.2021 18:56:34.813 [main] INFO  r.o.w.r.ReportServiceApplication - Started ReportServiceApplication in 15.972 seconds (JVM running for 17.177) 
