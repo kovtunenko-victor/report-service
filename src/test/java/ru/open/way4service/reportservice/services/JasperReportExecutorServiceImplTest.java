@@ -1,7 +1,11 @@
 package ru.open.way4service.reportservice.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +24,9 @@ public class JasperReportExecutorServiceImplTest {
     ReportExecutorService executorService;
     
     @Test
-    void methodExecuteReportShuldExportReport() throws ReportServiceException, InterruptedException {
-        executorService.executeReport(buildReportConfig(), buildReportProperties());
-        Thread.sleep(10000000);
+    void methodExecuteReportShuldExportReport() throws ReportServiceException, InterruptedException, ExecutionException {
+        Future<Boolean> result = executorService.executeReport(0, buildReportConfig(), buildReportProperties());
+        assertThat(result.get()).isEqualTo(true);
     }
     
     private ReportConfig buildReportConfig() {

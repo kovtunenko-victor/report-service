@@ -1,0 +1,24 @@
+12.08.2021 18:42:01.458 [main] INFO  r.o.w.r.ReportServiceApplication - Starting ReportServiceApplication using Java 1.8.0_261 on VARVARA-PC with PID 13400 (C:\Users\–í–∞—Ä—è\eclipse-workspace-ee\report-service\target\classes started by –í–∞—Ä—è in C:\Users\–í–∞—Ä—è\eclipse-workspace-ee\report-service) 
+12.08.2021 18:42:01.467 [main] DEBUG r.o.w.r.ReportServiceApplication - Running with Spring Boot v2.5.3, Spring v5.3.9 
+12.08.2021 18:42:01.468 [main] INFO  r.o.w.r.ReportServiceApplication - No active profile set, falling back to default profiles: default 
+12.08.2021 18:42:16.717 [main] INFO  r.o.w.r.ReportServiceApplication - Started ReportServiceApplication in 16.408 seconds (JVM running for 17.651) 
+12.08.2021 18:48:10.869 [http-nio-8080-exec-1] ERROR r.o.w.r.c.ReportServiceResponseEntityExceptionHandler - ru.open.way4service.reportservice.errors.ReportServiceException null 
+12.08.2021 18:48:14.200 [http-nio-8080-exec-3] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783294199] 
+12.08.2021 18:48:18.502 [http-nio-8080-exec-6] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783298502] 
+12.08.2021 18:48:19.686 [http-nio-8080-exec-7] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783299686] 
+12.08.2021 18:48:20.585 [http-nio-8080-exec-4] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783300585] 
+12.08.2021 18:48:21.465 [http-nio-8080-exec-8] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783301465] 
+12.08.2021 18:48:22.418 [http-nio-8080-exec-9] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783302418] 
+12.08.2021 18:48:23.528 [http-nio-8080-exec-10] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783303528] 
+12.08.2021 18:48:24.561 [http-nio-8080-exec-2] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783304561] 
+12.08.2021 18:48:25.535 [http-nio-8080-exec-1] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783305535] 
+12.08.2021 18:48:26.418 [http-nio-8080-exec-5] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783306418] 
+12.08.2021 18:48:27.274 [http-nio-8080-exec-3] INFO  r.o.w.r.controllers.ReportController - Start execute report by id [1], request number [1628783307274] 
+12.08.2021 18:48:27.295 [http-nio-8080-exec-3] ERROR r.o.w.r.c.ReportServiceResponseEntityExceptionHandler - ru.open.way4service.reportservice.errors.ReportServiceException Executor [java.util.concurrent.ThreadPoolExecutor@2ac0fc65[Running, pool size = 4, active threads = 4, queued tasks = 6, completed tasks = 0]] did not accept task: org.springframework.aop.interceptor.AsyncExecutionInterceptor$$Lambda$728/1723581178@b038f07 
+12.08.2021 18:49:56.701 [taskExecutor -1] INFO  r.o.w.r.s.JasperReportExecutorServiceImpl - Report id [1] with request number [1628783294199] is exported.  
+12.08.2021 18:49:58.616 [taskExecutor -2] INFO  r.o.w.r.s.JasperReportExecutorServiceImpl - Report id [1] with request number [1628783298502] is exported.  
+12.08.2021 18:54:13.611 [main] INFO  r.o.w.r.ReportServiceApplicationTests - Starting ReportServiceApplicationTests using Java 1.8.0_261 on VARVARA-PC with PID 3700 (started by ¬‡ˇ in C:\Users\¬‡ˇ\eclipse-workspace-ee\report-service) 
+12.08.2021 18:54:13.616 [main] DEBUG r.o.w.r.ReportServiceApplicationTests - Running with Spring Boot v2.5.3, Spring v5.3.9 
+12.08.2021 18:54:13.627 [main] INFO  r.o.w.r.ReportServiceApplicationTests - No active profile set, falling back to default profiles: default 
+12.08.2021 18:54:33.079 [main] INFO  r.o.w.r.ReportServiceApplicationTests - Started ReportServiceApplicationTests in 20.595 seconds (JVM running for 23.544) 
+12.08.2021 18:54:36.843 [taskExecutor -1] INFO  r.o.w.r.s.JasperReportExecutorServiceImpl - Report id [0] with request number [0] is exported.  

@@ -13,7 +13,7 @@
 
 	<groupId>ru.open.way4service</groupId>
 	<artifactId>report-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>report-service</name>
 	<description>Web service for jasper report</description>
 

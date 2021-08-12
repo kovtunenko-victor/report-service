@@ -5,9 +5,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
@@ -29,24 +33,26 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSwapFile;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+
+import ru.open.way4service.reportservice.models.ReportConfig;
 import ru.open.way4service.reportservice.errors.ReportServiceException;
 import ru.open.way4service.reportservice.models.ExportReportTypes;
-import ru.open.way4service.reportservice.models.ReportConfig;
 import ru.open.way4service.reportservice.models.VirtualaizerProperties;
 import ru.open.way4service.reportservice.models.VirtualaizerTypes;
 import ru.open.way4service.reportservice.repositories.target.TargetRepository;
 
 @Service("JasperReportExecutor")
 public class JasperReportExecutorServiceImpl implements ReportExecutorService {
+    private Logger logger = LoggerFactory.getLogger(JasperReportExecutorServiceImpl.class);
     @Autowired
     TargetRepository targetRepository;
 
     @Override
     @Async("taskExecutor")
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void executeReport(ReportConfig reportConfig, Map<String, Object> properties) throws ReportServiceException {
+    public Future<Boolean> executeReport(long requestNumber, ReportConfig reportConfig, Map<String, Object> properties) {
         Map<String, Object> localProperties = new HashMap<>(properties);
-
+        
         try {
             JasperReportBuilder reportBuilder = new JasperReportBuilder(reportConfig);
             JRBaseFiller filler = reportBuilder.getJasperFiller();
@@ -62,16 +68,20 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
                 exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
                         ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath())));
                 exporter.exportReport();
+                
+                logger.info(String.format("Report id [%s] with request number [%s] is exported. ", reportConfig.getReportId(),requestNumber));
+                
+                return new AsyncResult<Boolean>(Boolean.TRUE);
             }
         } catch (JRException ex) {
-            throw new ReportServiceException("See nested exception", ex);
+            throw new ReportServiceException(ex);
         } catch (SQLException ex) {
-            throw new ReportServiceException("See nested exception", ex);
+            throw new ReportServiceException(ex);
         }
     }
 
     @SuppressWarnings("rawtypes")
-    private JRAbstractExporter getJasperExporter(ExportReportTypes reportTypes) throws ReportServiceException {
+    private JRAbstractExporter getJasperExporter(ExportReportTypes reportTypes) {
         JRAbstractExporter exporter = null;
 
         if (reportTypes.equals(ExportReportTypes.XLS)) {
@@ -89,11 +99,11 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
     }
 
     private static class JasperReportFileLoader {
-        public static JasperReport loadJasperReport(File tamplateFilePath) throws ReportServiceException {
+        public static JasperReport loadJasperReport(File tamplateFilePath) {
             try {
                 return (JasperReport) JRLoader.loadObject(tamplateFilePath);
             } catch (JRException ex) {
-                throw new ReportServiceException("See nested exception", ex);
+                throw new ReportServiceException(ex);
             }
         }
     }
@@ -102,12 +112,12 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
         private final JRBaseFiller jasperFiller;
         private final JRVirtualizer jasperVirtualaizer;
 
-        public JasperReportBuilder(ReportConfig reportConfig) throws ReportServiceException {
+        public JasperReportBuilder(ReportConfig reportConfig) {
             jasperFiller = buildJasperFiller(reportConfig);
             jasperVirtualaizer = buildJasperVirtualizer(reportConfig);
         }
 
-        private JRVirtualizer buildJasperVirtualizer(ReportConfig reportConfig) throws ReportServiceException {
+        private JRVirtualizer buildJasperVirtualizer(ReportConfig reportConfig) {
             if (!reportConfig.getVirtualaizerType().equals(VirtualaizerTypes.NOT_USE)) {
                 JRVirtualizer virtualaizer = null;
 
@@ -149,7 +159,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
             }
         }
 
-        private JRBaseFiller buildJasperFiller(ReportConfig reportConfig) throws ReportServiceException {
+        private JRBaseFiller buildJasperFiller(ReportConfig reportConfig) {
             try {
                 JasperReport report = JasperReportFileLoader.loadJasperReport(
                         ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()));
@@ -158,7 +168,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
 
                 return filler;
             } catch (JRException ex) {
-                throw new ReportServiceException("See nested exception", ex);
+                throw new ReportServiceException(ex);
             }
         }
 
