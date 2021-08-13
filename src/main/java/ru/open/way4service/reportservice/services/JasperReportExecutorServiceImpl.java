@@ -52,24 +52,39 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Future<Boolean> executeReport(long requestNumber, ReportConfig reportConfig, Map<String, Object> properties) {
         Map<String, Object> localProperties = new HashMap<>(properties);
-        
         try {
+            logger.trace(String.format("Report id [%s] with request number [%s]. Start build jasper report", reportConfig.getReportId(),requestNumber));
             JasperReportBuilder reportBuilder = new JasperReportBuilder(reportConfig);
+            logger.trace(String.format("Report id [%s] with request number [%s]. End build jasper report", reportConfig.getReportId(),requestNumber));
+            
+            logger.trace(String.format("Report id [%s] with request number [%s]. Start create jasper filler", reportConfig.getReportId(),requestNumber));
             JRBaseFiller filler = reportBuilder.getJasperFiller();
+            logger.trace(String.format("Report id [%s] with request number [%s]. End create jasper filler", reportConfig.getReportId(),requestNumber));
+            
+            logger.trace(String.format("Report id [%s] with request number [%s]. Start create jasper exporter", reportConfig.getReportId(),requestNumber));
             JRAbstractExporter exporter = getJasperExporter(reportConfig.getExportType());
+            logger.trace(String.format("Report id [%s] with request number [%s]. End create jasper exporter", reportConfig.getReportId(),requestNumber));
 
             if (reportBuilder.getJasperVirtualaizer() != null) {
+                logger.trace(String.format("Report id [%s] with request number [%s]. Start create jasper virtualaizer", reportConfig.getReportId(),requestNumber));
                 localProperties.put(JRParameter.REPORT_VIRTUALIZER, reportBuilder.getJasperVirtualaizer());
+                logger.trace(String.format("Report id [%s] with request number [%s]. End create jasper virtualaizer", reportConfig.getReportId(),requestNumber));
             }
-
+            
+            logger.trace(String.format("Report id [%s] with request number [%s]. Start open db connection", reportConfig.getReportId(),requestNumber));
             try (Connection connection = targetRepository.getConnection()) {
+                logger.trace(String.format("Report id [%s] with request number [%s]. Db connection is open", reportConfig.getReportId(),requestNumber));
+                logger.trace(String.format("Report id [%s] with request number [%s]. Start fill jasper print", reportConfig.getReportId(),requestNumber));
                 JasperPrint print = filler.fill(localProperties, connection);
+                logger.trace(String.format("Report id [%s] with request number [%s]. End fill jasper print", reportConfig.getReportId(), requestNumber));
                 exporter.setExporterInput(new SimpleExporterInput(print));
+                logger.trace(String.format("Report id [%s] with request number [%s]. File to export [%s]", reportConfig.getReportId(), requestNumber, ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath())));
                 exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
                         ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath())));
-                exporter.exportReport();
                 
-                logger.info(String.format("Report id [%s] with request number [%s] is exported. ", reportConfig.getReportId(),requestNumber));
+                logger.trace(String.format("Report id [%s] with request number [%s]. Start to export report", reportConfig.getReportId(),requestNumber));
+                exporter.exportReport();
+                logger.info(String.format("Report id [%s] with request number [%s]. Report exported", reportConfig.getReportId(),requestNumber));
                 
                 return new AsyncResult<Boolean>(Boolean.TRUE);
             }
@@ -99,16 +114,21 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
     }
 
     private static class JasperReportFileLoader {
+        private static Logger logger = LoggerFactory.getLogger(JasperReportFileLoader.class);
+        
         public static JasperReport loadJasperReport(File tamplateFilePath) {
             try {
                 return (JasperReport) JRLoader.loadObject(tamplateFilePath);
             } catch (JRException ex) {
+                logger.error(ex.getMessage());
                 throw new ReportServiceException(ex);
             }
         }
     }
 
     private static class JasperReportBuilder {
+        private static Logger logger = LoggerFactory.getLogger(JasperReportBuilder.class);
+        
         private final JRBaseFiller jasperFiller;
         private final JRVirtualizer jasperVirtualaizer;
 
@@ -168,6 +188,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
 
                 return filler;
             } catch (JRException ex) {
+                logger.error(ex.getMessage());
                 throw new ReportServiceException(ex);
             }
         }

@@ -19,11 +19,13 @@ services:
     ports:
       - 9991:8080
     volumes:
-      - $HOME/docker/volumes/report-service/logs:/home/logs
-      - $HOME/docker/volumes/report-service/reports-template:/home/reports-template
-      - $HOME/docker/volumes/report-service/reports:/home/reports
+      - /home/docker/volumes/report-service/logs:/home/logs
+      - /home/docker/volumes/report-service/reports-template:/home/reports-template
+      - /home/docker/volumes/report-service/reports:/home/reports
     depends_on:
       - db-config
+      - ftp-server
+      - oracle-db
   db-config:
     image: postgres
     container_name: report-service-db-config
@@ -34,10 +36,24 @@ services:
       - 9981:5432
     volumes:
       - ./sql:/docker-entrypoint-initdb.d/
-      - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+      - /home/docker/volumes/postgres:/var/lib/postgresql/data
+  ftp-server:
+    image: bogem/ftp
+    container_name: ftp-server
+    restart: always
+    environment:
+      FTP_USER: reporter
+      FTP_PASS: 12345 
+      PASV_ADDRESS: 194.67.113.230 
+    ports:
+      - "20:20"
+      - "21:21" 
+      - 47400-47470:47400-47470
+    volumes:
+      - /home/docker/volumes/report-service:/home/vsftpd
   oracle-db:
     image: oracleinanutshell/oracle-xe-11g:latest
-    container_name: practical_blackburn
+    container_name: oracle-db
     restart: always
     environment: 
       - ORACLE_ALLOW_REMOTE=true

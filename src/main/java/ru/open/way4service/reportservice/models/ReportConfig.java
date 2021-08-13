@@ -81,7 +81,8 @@ public class ReportConfig {
             String extension = splitedFileName[splitedFileName.length - 1];
             
             StringBuilder resultFileName = new StringBuilder();
-            resultFileName.append(exportFilePath.getParent()).append("\\");
+            
+            resultFileName.append(exportFilePath.getParent()).append(File.separator);
             
             for(int i = 0; i < splitedFileName.length - 1; i++) {
                 resultFileName.append(splitedFileName[i]).append(".");

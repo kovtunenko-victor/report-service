@@ -53,8 +53,9 @@ public class ReportController {
             @Parameter(name = "properties", description = "Properties map for running the report") @RequestBody Map<String, Object> properties) {
         try {
             long requestNumber = System.currentTimeMillis();
-            logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));
+            logger.info(String.format("Report id [%s] with request number [%s]. Start report export", id, requestNumber));
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
+            logger.trace(String.format("Report id [%s] with request number [%s]. Report config is loaded", id, requestNumber));
             reportExecutor.executeReport(requestNumber, reportConfig, properties);
         } catch (Exception ex) {
             throw new ReportServiceException(ex);
