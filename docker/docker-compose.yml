@@ -14,7 +14,7 @@ services:
       SERVICE_DB_PASS: rsdc_pwd01
       TARGET_DB_HOST: oracle-db:1521
       TARGET_DB_SID: xe
-      TARGET_DB_USER: ows
+      TARGET_DB_USER: oracle_user
       TARGET_DB_PASS: 1234
     ports:
       - 9991:8080

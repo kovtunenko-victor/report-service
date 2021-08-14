@@ -15,11 +15,11 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Open bank Way4Service Report service API doc")
+                                .title("report-service API doc")
                                 .version("0.0.1")
                                 .contact(
                                         new Contact()
-                                                .email("viktor.kovtunenko@open.ru")
+                                                .email("viktor.kovtunenko@gmail.com")
                                                 .name("Kovtunenko Victor")
                                                 )
                 );
