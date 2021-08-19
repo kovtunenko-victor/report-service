@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class ReportServiceApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(ReportServiceApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(ReportServiceApplication.class, args);
+    }
 }
