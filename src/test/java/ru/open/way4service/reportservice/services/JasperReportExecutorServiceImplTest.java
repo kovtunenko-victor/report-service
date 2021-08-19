@@ -35,8 +35,8 @@ public class JasperReportExecutorServiceImplTest {
         reportConfig.setTitle("Title");
         reportConfig.setVirtualaizerType(VirtualaizerTypes.NOT_USE);
         reportConfig.setExportType(ExportReportTypes.XLS);
-        reportConfig.setExportFilePath("C:\\reports\\report1\\export\\report_1.xlsx");
-        reportConfig.setTamplateFilePath("C:\\reports\\report1\\template\\report1.jasper");
+        reportConfig.setExportFilePath("d:\\users\\kovtunenko_ve\\reports\\report1\\export\\report_1.xlsx");
+        reportConfig.setTamplateFilePath("d:\\users\\kovtunenko_ve\\reports\\report1\\template\\report1.jasper");
         return reportConfig;
     }
     

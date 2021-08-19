@@ -1,4 +1,5 @@
 HELP.md
+nbactions.xml
 target/
 bin/
 logs/
