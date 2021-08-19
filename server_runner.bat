@@ -1,0 +1,1 @@
+java.exe -jar -Xmx4G -DSTART_POOL_SIZE=10 -DMAX_POOL_SIZE=20 -DTHREAD_POOL_QUEUE_CAPACITY=50 -DSERVICE_DB_HOST=app-openway02.open.ru:2222 -DSERVICE_DB_NAME=postgres -DSERVICE_DB_USER=postgres -DSERVICE_DB_PASS=rsdc_pwd01 -DTARGET_DB_HOST=db-4waytst02.open.ru:9993 -DTARGET_DB_SID=owtest8 -DTARGET_DB_USER=reporter -DTARGET_DB_PASS=reporter2015 report-service-0.0.1.jar
