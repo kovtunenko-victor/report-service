@@ -24,12 +24,12 @@ public class ReportServiceResponseEntityExceptionHandler extends ResponseEntityE
     public ResponseEntity<Object> handleInternal(final Exception ex, final WebRequest request) {
         
         if(ex.getMessage() != null && ex.getMessage().equals("See nested exception")) {
-            logger.error(ex.getClass().getName() + " " + ex.getCause().getMessage());
+            logger.error(ex.getClass().getName() + " " + ex.getCause().getMessage(), ex);
             if(ex.getCause() instanceof TaskRejectedException) {
                 return handleExceptionInternal(ex, "", new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE, request);
             }
         } else {
-            logger.error(ex.getClass().getName() + " " + ex.getMessage());
+            logger.error(ex.getClass().getName() + " " + ex.getMessage(), ex);
         }
         
         return handleExceptionInternal(ex, "", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
