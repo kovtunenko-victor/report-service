@@ -74,6 +74,11 @@
 			<artifactId>assertj-core</artifactId>
 			<scope>test</scope>
 		</dependency>
+                <dependency>
+                    <groupId>com.open.scriplet</groupId>
+                    <artifactId>base</artifactId>
+                    <version>0.0.1</version>
+                </dependency>
 	</dependencies>
 
 	<build>
