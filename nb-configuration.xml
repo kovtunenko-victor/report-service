@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-shared-configuration>
+    <!--
+This file contains additional configuration written by modules in the NetBeans IDE.
+The configuration is intended to be shared among all the users of project and
+therefore it is assumed to be part of version control checkout.
+Without this configuration present, some functionality in the IDE may be limited or fail altogether.
+-->
+    <config-data xmlns="http://www.netbeans.org/ns/maven-config-data/1">
+        <configurations>
+            <configuration id="project-profile" profiles="">
+                <property name="SERVICE_DB_PASS">rsdc_pwd01</property>
+                <property name="TARGET_DB_PASS">reporter2015</property>
+                <property name="TARGET_DB_USER">reporter</property>
+                <property name="TARGET_DB_HOST">db-4waytst02.open.ru:9993</property>
+                <property name="START_POOL_SIZE">4</property>
+                <property name="MAX_POOL_SIZE">8</property>
+                <property name="SERVICE_DB_USER">postgres</property>
+                <property name="SERVICE_DB_HOST">app-openway02.open.ru:2222</property>
+                <property name="SERVICE_DB_NAME">postgres</property>
+                <property name="THREAD_POOL_QUEUE_CAPACITY">4</property>
+                <property name="TARGET_DB_SID">owtest8</property>
+            </configuration>
+        </configurations>
+    </config-data>
+</project-shared-configuration>
