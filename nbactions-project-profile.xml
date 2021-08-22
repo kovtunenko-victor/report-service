@@ -14,4 +14,19 @@
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-Xmx4G -DSTART_POOL_SIZE=4 -DMAX_POOL_SIZE=8 -DTHREAD_POOL_QUEUE_CAPACITY=4 -DSERVICE_DB_HOST=app-openway02.open.ru:2222 -DSERVICE_DB_NAME=postgres -DSERVICE_DB_USER=postgres -DSERVICE_DB_PASS=rsdc_pwd01 -DTARGET_DB_HOST=db-4waytst02.open.ru:9993 -DTARGET_DB_SID=owtest8 -DTARGET_DB_USER=reporter -DTARGET_DB_PASS=reporter2015 -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName}</exec.args>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
     </actions>

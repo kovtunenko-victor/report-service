@@ -26,7 +26,8 @@ public class TaskPoolConfig {
         executor.setMaxPoolSize (maxPoolSize);
         executor.setQueueCapacity (queueCapacity); 
         executor.setKeepAliveSeconds (60); 
-        executor.setThreadNamePrefix ("taskExecutor -");
+        executor.setThreadNamePrefix ("taskExecutor - ");
+        executor.setThreadGroupName("taskExecutorGroup");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
         executor.initialize (); 
         
