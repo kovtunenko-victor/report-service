@@ -213,8 +213,10 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
             Thread thread = new Thread(() -> {
                 try {
                     Thread.sleep(TimeUnit.HOURS.toMillis(TIMEOUT_IN_HOURS));
-                    logger.error(String.format("Report id [%s] with request number [%s]. Report execute timeout", reportId, requestNumber));
-                    mainThrad.interrupt();
+                    if(mainThrad.isAlive()) {
+                        logger.error(String.format("Report id [%s] with request number [%s]. Report execute timeout", reportId, requestNumber));
+                        mainThrad.interrupt();
+                    }
                 } catch (Exception ex) {
                     logger.error(String.format("Report id [%s] with request number [%s]. Exception at timeout", reportId, requestNumber), ex);
                     throw new ReportServiceException(ex);
