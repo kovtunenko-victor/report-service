@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ru.open.way4service.reportservice.errors.ReportServiceException;
 import ru.open.way4service.reportservice.models.ReportConfig;
@@ -33,9 +35,11 @@ public class ReportController {
     ReportLoaderService reportLoaderService;
 
     @PostMapping(value = "/report/execute/{reportId}", produces = "application/json")
-    @Operation(summary = "Provides the ability to run a report", description = "Provides execute report. Report run in thread pool. Set reportId in service path and put in request body map of report properties. If thread pool is overflowing returned status 503")
+    @Operation(summary = "Provides the ability to run a report",
+            responses = {@ApiResponse(responseCode = "200", description = "Report strat to execute"), @ApiResponse(responseCode = "503", description = "Thread pool is overflowing"), @ApiResponse(responseCode = "500", description = "Internal server error")},
+            description = "Provides execute report. Report run in thread pool. Set reportId in service path and put in request body map of report properties")
     public void executeReport(
-            @Parameter(name = "reportId", description = "Report id in service configuration DB", example = "123") @PathVariable("reportId") long id,
+            @Parameter(name = "reportId", description = "Report id in service configuration DB", example="123") @PathVariable("reportId") long id,
             @Parameter(name = "properties", description = "Properties map for running the report") @RequestBody Map<String, Object> properties) {
         try {
             long requestNumber = System.currentTimeMillis();
@@ -48,7 +52,9 @@ public class ReportController {
     }
 
     @PostMapping(value = "/report/execute-async/{reportId}", produces = "application/json")
-    @Operation(summary = "Provides the ability to run a report async", description = "Provides execute report async. Report run in thread pool. Set reportId in service path and put in request body map of report properties. If thread pool is overflowing returned status 503")
+    @Operation(summary = "Provides the ability to run a report async",
+            responses = {@ApiResponse(responseCode = "200", description = "Report strat to execute"), @ApiResponse(responseCode = "503", description = "Thread pool is overflowing"), @ApiResponse(responseCode = "500", description = "Internal server error")},
+            description = "Provides execute report async. Report run in thread pool. Set reportId in service path and put in request body map of report properties")
     public void executeReportAsync(
             @Parameter(name = "reportId", description = "Report id in service configuration DB", example = "123") @PathVariable("reportId") long id,
             @Parameter(name = "properties", description = "Properties map for running the report") @RequestBody Map<String, Object> properties) {
