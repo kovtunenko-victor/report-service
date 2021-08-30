@@ -72,12 +72,16 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
                 localProperties.put(JRParameter.REPORT_VIRTUALIZER, reportBuilder.getJasperVirtualaizer());
                 logger.trace(String.format("Report id [%s] with request number [%s]. End create jasper virtualaizer", reportConfig.getReportId(), requestNumber));
             }
+            
+            if(!localProperties.containsKey("SUBREPORT_DIR")) {
+                localProperties.put("SUBREPORT_DIR", ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()).getParent() + File.separator);
+            }
 
             logger.trace(String.format("Report id [%s] with request number [%s]. Start open db connection", reportConfig.getReportId(), requestNumber));
 
             try (Connection connection = targetRepository.getConnection()) {
                 logger.trace(String.format("Report id [%s] with request number [%s]. Start fill jasper print", reportConfig.getReportId(), requestNumber));
-                ReportTimeoutProvider.provideTimeout(Thread.currentThread(), reportConfig.getReportId(), requestNumber);
+                Thread enderThread = ReportTimeoutProvider.provideTimeout(Thread.currentThread(), reportConfig.getReportId(), requestNumber);
                 JasperPrint print = filler.fill(localProperties, connection);
                 logger.trace(String.format("Report id [%s] with request number [%s]. End fill jasper print", reportConfig.getReportId(), requestNumber));
                 exporter.setExporterInput(new SimpleExporterInput(print));
@@ -86,6 +90,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
                 logger.trace(String.format("Report id [%s] with request number [%s]. Start to export report", reportConfig.getReportId(), requestNumber));
                 exporter.exportReport();
                 logger.info(String.format("Report id [%s] with request number [%s]. Report exported", reportConfig.getReportId(), requestNumber));
+                enderThread.interrupt();
             }
 
             return new AsyncResult<>(Boolean.TRUE);
@@ -209,14 +214,16 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
         private static Logger logger = LoggerFactory.getLogger(ReportTimeoutProvider.class);
         private static final long TIMEOUT_IN_HOURS = 4;
         
-        public static void provideTimeout(Thread mainThrad, long reportId, long requestNumber) {
+        public static Thread provideTimeout(Thread mainThrad, long reportId, long requestNumber) {
             Thread thread = new Thread(() -> {
                 try {
-                    Thread.sleep(TimeUnit.HOURS.toMillis(TIMEOUT_IN_HOURS));
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(TIMEOUT_IN_HOURS));
                     if(mainThrad.isAlive()) {
                         logger.error(String.format("Report id [%s] with request number [%s]. Report execute timeout", reportId, requestNumber));
                         mainThrad.interrupt();
                     }
+                } catch (InterruptedException ex) {
+                    
                 } catch (Exception ex) {
                     logger.error(String.format("Report id [%s] with request number [%s]. Exception at timeout", reportId, requestNumber), ex);
                     throw new ReportServiceException(ex);
@@ -224,6 +231,8 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
             }, String.format("threadEnder - %s", requestNumber));
             
             thread.start();
+            
+            return thread;
         }
     }
 }
