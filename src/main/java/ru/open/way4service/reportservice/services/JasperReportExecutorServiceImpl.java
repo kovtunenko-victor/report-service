@@ -74,6 +74,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
             }
             
             if(!localProperties.containsKey("SUBREPORT_DIR")) {
+                logger.trace(String.format("Report id [%s] with request number [%s]. Set SUBREPORT_DIR [%s]", reportConfig.getReportId(), requestNumber, ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()).getParent() + File.separator));
                 localProperties.put("SUBREPORT_DIR", ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()).getParent() + File.separator);
             }
 
@@ -217,7 +218,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
         public static Thread provideTimeout(Thread mainThrad, long reportId, long requestNumber) {
             Thread thread = new Thread(() -> {
                 try {
-                    Thread.sleep(TimeUnit.SECONDS.toMillis(TIMEOUT_IN_HOURS));
+                    Thread.sleep(TimeUnit.HOURS.toMillis(TIMEOUT_IN_HOURS));
                     if(mainThrad.isAlive()) {
                         logger.error(String.format("Report id [%s] with request number [%s]. Report execute timeout", reportId, requestNumber));
                         mainThrad.interrupt();
