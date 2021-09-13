@@ -50,17 +50,22 @@ INSERT INTO public.virtualaizer_properties(
     
 INSERT INTO public.reports(
 	id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-	VALUES (1, 'c:\reports\report1\export\report_1.xlsx', 'XLS', 'c:\reports\report1\template\report1.jasper', 'test_report1', 'NOT_USE', null);
+	VALUES (1, 'd:\users\kovtunenko_ve\reports\report1\export\report_1.xlsx', 'XLS', 'd:\users\kovtunenko_ve\reports\report1\template\report1.jasper', 'test_report1', 'NOT_USE', null);
 INSERT INTO public.reports(
 	id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-	VALUES (2, 'c:\reports\report2\export\report_2.xlsx', 'XLS', 'c:\reports\report2\template\report2.jasper', 'test_report2', 'SWAP', 1);
+	VALUES (2, 'd:\users\kovtunenko_ve\reports\report2\export\report_2.xlsx', 'XLS', 'd:\users\kovtunenko_ve\reports\report2\template\report2.jasper', 'test_report2', 'SWAP', 1);
 INSERT INTO public.reports(
 	id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-	VALUES (3, 'c:\reports\report2\export\report_2.xlsx', 'XLS', 'c:\reports\report2\template\report2.jasper', 'test_report3', 'SWAP', 1);
+	VALUES (3, 'd:\users\kovtunenko_ve\reports\report2\export\report_2.xlsx', 'XLS', 'd:\users\kovtunenko_ve\reports\report2\template\report2.jasper', 'test_report3', 'SWAP', 1);
 INSERT INTO public.reports(
 	id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-	VALUES (4, 'c:\reports\report2\export\report_2.xlsx', 'XLS', 'c:\reports\report2\template\report2.jasper', 'test_report3', 'SWAP', 1);
-
-INSERT INTO reports (
+	VALUES (4, 'd:\users\kovtunenko_ve\reports\report2\export\report_2.xlsx', 'XLS', 'd:\users\kovtunenko_ve\reports\report2\template\report2.jasper', 'test_report3', 'SWAP', 1);
+INSERT INTO public.reports (
     id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (22, '/home/reports/report1.xlsx','XLS','/home/reports-template/report1/template/report1.jasper','test_report_1_linix','NOT_USE',null);
+    VALUES (5, 'D:\Users\kovtunenko_ve\reports\out\pos_terminals.xlsx','XLS','P:\OWSWork\Prod\Data\Jasper reports\Bfko.reports.jrxml.arm-udp-pos-terminals\pos_terminals_view.jasper','test_pos_terminals','NOT_USE',null);
+INSERT INTO public.reports (
+    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
+    VALUES (6, '/home/podmanusr/open_shares/prod/reports/testreports/report1.xlsx','XLS','/home/podmanusr/open_shares/prod/reports-template/report1/report1.jasper','test_report1','NOT_USE',null);
+INSERT INTO public.reports (
+    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
+    VALUES (7, '/home/reports/report1.xlsx','XLS','/home/reports-template/report1/report1.jasper','test_report1','NOT_USE',null);
