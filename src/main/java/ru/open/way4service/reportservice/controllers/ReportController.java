@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ru.open.way4service.reportservice.errors.ReportServiceException;
@@ -46,6 +45,7 @@ public class ReportController {
             logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
             reportExecutor.executeReport(requestNumber, reportConfig, properties).get();
+            logger.info(String.format("Send response for report by id [%s], request number [%s]", id, requestNumber));
         } catch (Exception ex) {
             throw new ReportServiceException(ex);
         }
@@ -64,6 +64,7 @@ public class ReportController {
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
             logger.trace(String.format("Report id [%s] with request number [%s]. Report config is loaded", id, requestNumber));
             reportExecutor.executeReport(requestNumber, reportConfig, properties);
+            logger.info(String.format("Send response for report by id [%s], request number [%s]", id, requestNumber));
         } catch (Exception ex) {
             throw new ReportServiceException(ex);
         }
