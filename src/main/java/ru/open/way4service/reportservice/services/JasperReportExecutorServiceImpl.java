@@ -72,8 +72,8 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
                 localProperties.put(JRParameter.REPORT_VIRTUALIZER, reportBuilder.getJasperVirtualaizer());
                 logger.trace(String.format("Report id [%s] with request number [%s]. End create jasper virtualaizer", reportConfig.getReportId(), requestNumber));
             }
-            
-            if(!localProperties.containsKey("SUBREPORT_DIR")) {
+
+            if (!localProperties.containsKey("SUBREPORT_DIR")) {
                 logger.trace(String.format("Report id [%s] with request number [%s]. Set SUBREPORT_DIR [%s]", reportConfig.getReportId(), requestNumber, ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()).getParent() + File.separator));
                 localProperties.put("SUBREPORT_DIR", ReportConfig.Utils.getObjectTamplateFilePath(reportConfig.getTamplateFilePath()).getParent() + File.separator);
             }
@@ -214,25 +214,25 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
     private static class ReportTimeoutProvider {
         private static Logger logger = LoggerFactory.getLogger(ReportTimeoutProvider.class);
         private static final long TIMEOUT_IN_HOURS = 4;
-        
+
         public static Thread provideTimeout(Thread mainThrad, long reportId, long requestNumber) {
             Thread thread = new Thread(() -> {
                 try {
                     Thread.sleep(TimeUnit.HOURS.toMillis(TIMEOUT_IN_HOURS));
-                    if(mainThrad.isAlive()) {
+                    if (mainThrad.isAlive()) {
                         logger.error(String.format("Report id [%s] with request number [%s]. Report execute timeout", reportId, requestNumber));
                         mainThrad.interrupt();
                     }
                 } catch (InterruptedException ex) {
-                    
+
                 } catch (Exception ex) {
                     logger.error(String.format("Report id [%s] with request number [%s]. Exception at timeout", reportId, requestNumber), ex);
                     throw new ReportServiceException(ex);
                 }
             }, String.format("threadEnder - %s", requestNumber));
-            
+
             thread.start();
-            
+
             return thread;
         }
     }
