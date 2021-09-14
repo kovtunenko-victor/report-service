@@ -54,10 +54,10 @@ public class ServiceRepositoryTest {
 
     @Test
     void methodGetReportByTitleShuldReturnReportEntityByIdWithVirtualaizerTypesEqNotUse() throws ReportServiceException {
-        ReportConfig report = serviceRepository.getReportByTitle("test_report1");
+        ReportConfig report = serviceRepository.getReportByTitle("test_pos_terminals");
 
         assertThat(report).isNotNull();
-        assertThat(report.getTitle()).isEqualTo("test_report1");
+        assertThat(report.getTitle()).isEqualTo("test_pos_terminals");
         if (report.getVirtualaizerType() != VirtualaizerTypes.NOT_USE) {
             assertThat(report.getVirtualaizerProps()).isNotNull();
         }
