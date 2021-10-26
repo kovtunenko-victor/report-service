@@ -1,66 +1,28 @@
-**===============================================================**
-**report-service это REST сервис для построения отчетов jasper**
-**===============================================================**
+# Read Me First
+The following was discovered as part of building this project:
 
+* The original package name 'ru.open.way4service.report-service' is invalid and this project uses 'ru.open.way4service.reportservice' instead.
 
-основной причиной разработки сервиса было не возможность настроить основную систему, таким 
-образом, что бы можно было запустить "объемный" отчет на jasper.
+# Getting Started
 
-report-service является компонентом системы "Построения отчетов" реализующий непосредственно 
-построение отчетов jasper. (в состав системы так же входит сервис report-service-balancer, 
-который еще нужно разработать)
+### Reference Documentation
+For further reference, please consider the following sections:
 
-report-service сервис ориентирован на запуск в контейнере docker/podman
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.5.3/maven-plugin/reference/html/)
+* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.5.3/maven-plugin/reference/html/#build-image)
+* [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#boot-features-developing-web-applications)
+* [Spring Security](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#boot-features-security)
+* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.3/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 
-в состав сервиса входит: сервис report-service, база данных конфигурации сервиса postgres, 
-база данных основной системы
+### Guides
+The following guides illustrate how to use some features concretely:
 
-в сервисе реализовано построение отчета в пуле потоков заданного объема. при попытке выполнить 
-отчет сверх этого лимита сервис вернет ошибку 503
-
-сервис позволяет построить отчет как синхронно, так и асинхронно
-
-у сервиса есть документация swagger описывающая интерфейс сервиса http://server_name:server_port/swagger-ui.html
-
-
-**кратко о сервисе**
-
-реализовано 2 интерфейса:
-асинхронный http://server_name:server_port/report-service/report/execute-async/{reportId}
-синхронный  http://server_name:server_port/report-service/report/execute/{reportId}
-
-оба интерфейса ожидают на вход сообщение с RequestBody в формате JSON (Map<String,Object> параметров jasper отчета и путь к выгружаемому файлу):
-
-*{
-  "exportFilePath": "/home/reports/testreports/test.xlsx"
-, "properties": {
-  , "reportProp1": "propValue1"
-  , "reportProp2": 123
-  , "reportProp3": 10.01
-  , "reportProp3": { "prop1": "val1", "prop2": "val2" }
-  }
-}*
-каждый отчет, запускаемый сервисом будет выполнен в отдельном потоке пула потоков. настройки пула настраиваются при запуске сервиса.
-если в пуле нет доступного потока сервис вернет ответ со статусом 503.
-
-**кратко о бд конфигурации**
-
-app-openway02.open.ru:9981 бд postgres логин postgres пасс rsdc_pwd01 
-
-в базе 2 таблицы
-reports - настройки доступных отчетов для построения и их настройки
-virtualaizer_properties - настройки jasper virtualaizer.
-
-**кратко о сборке и развертывании сервиса**
-
-собрать проект с помощью maven (например командой install)
-в папке cmd выполнить файл deploy_to_app-openway02.bat
-зайти на app-openway02 под podmanusr(пасс как на схеме reporter) и выполнить ~/way4service/deploy.sh
-
-
-
-
- 
-
-
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
+* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
+* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
+* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 
