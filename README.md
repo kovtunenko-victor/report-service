@@ -1,7 +1,5 @@
 # report-service это REST сервис для построения отчетов jasper
 
-
-
 основной причиной разработки сервиса было не возможность настроить основную систему, таким 
 образом, что бы можно было запустить "объемный" отчет на jasper.
 
@@ -30,17 +28,17 @@ report-service сервис ориентирован на запуск в кон
 * синхронный  http://server_name:server_port/report-service/report/execute/{reportId}
 
 оба интерфейса ожидают на вход сообщение с RequestBody в формате JSON (Map<String,Object> параметров jasper отчета и путь к выгружаемому файлу):
-
-*{
-  "exportFilePath": "/home/reports/testreports/test.xlsx"
-, "properties": {
-  , "reportProp1": "propValue1"
-  , "reportProp2": 123
-  , "reportProp3": 10.01
-  , "reportProp3": { "prop1": "val1", "prop2": "val2" }
-  }
-}*
-
+```json
+{
+"exportFilePath": "/home/reports/testreports/test.xlsx"
+    , "properties": {
+        , "reportProp1": "propValue1"
+        , "reportProp2": 123
+        , "reportProp3": 10.01
+        , "reportProp3": { "prop1": "val1", "prop2": "val2" }
+    }
+}
+```
 каждый отчет, запускаемый сервисом будет выполнен в отдельном потоке пула потоков. настройки пула настраиваются при запуске сервиса.
 если в пуле нет доступного потока сервис вернет ответ со статусом 503.
 
