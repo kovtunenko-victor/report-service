@@ -42,6 +42,7 @@ public class ReportController {
         try {
             long requestNumber = System.currentTimeMillis();
             logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));
+            logger.info(String.format("Received report properties [%s]", settings.toString()));
             
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
             
@@ -67,6 +68,7 @@ public class ReportController {
         try {
             long requestNumber = System.currentTimeMillis();
             logger.info(String.format("Report id [%s] with request number [%s]. Start report export", id, requestNumber));
+            logger.info(String.format("Received report properties [%s]", settings.toString()));
             
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
             
