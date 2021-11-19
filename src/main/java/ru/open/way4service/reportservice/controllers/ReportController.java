@@ -32,7 +32,7 @@ public class ReportController {
     @Autowired
     ReportLoaderService reportLoaderService;
 
-    @PostMapping(value = "/report/execute/{reportId}", produces = "application/json")
+    @PostMapping(value = "/report/execute/{reportId}", produces = "application/json; charset=UTF-8")
     @Operation(summary = "Provides the ability to run a report",
             responses = {@ApiResponse(responseCode = "200", description = "Report strat to execute"), @ApiResponse(responseCode = "503", description = "Thread pool is overflowing"), @ApiResponse(responseCode = "500", description = "Internal server error")},
             description = "Provides execute report. Report run in thread pool. Set reportId in service path and put in request body map of report properties")
@@ -41,7 +41,7 @@ public class ReportController {
             @Parameter(name = "settings", description = "Settings that include the path and name of the unloaded file and a map of parameters") @RequestBody ReportRequest settings) {
         try {
             long requestNumber = System.currentTimeMillis();
-            logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));
+            logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));;
             logger.info(String.format("Received report properties [%s]", settings.toString()));
             
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
@@ -58,7 +58,7 @@ public class ReportController {
         }
     }
 
-    @PostMapping(value = "/report/execute-async/{reportId}", produces = "application/json")
+    @PostMapping(value = "/report/execute-async/{reportId}", produces = "application/json; charset=UTF-8")
     @Operation(summary = "Provides the ability to run a report async",
             responses = {@ApiResponse(responseCode = "200", description = "Report strat to execute"), @ApiResponse(responseCode = "503", description = "Thread pool is overflowing"), @ApiResponse(responseCode = "500", description = "Internal server error")},
             description = "Provides execute report async. Report run in thread pool. Set reportId in service path and put in request body map of report properties")

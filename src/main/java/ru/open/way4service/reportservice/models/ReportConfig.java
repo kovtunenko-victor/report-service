@@ -17,6 +17,11 @@ import javax.persistence.Table;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import lombok.Getter;
 import lombok.Setter;
 import ru.open.way4service.reportservice.errors.ReportServiceException;
@@ -73,6 +78,15 @@ public class ReportConfig {
                 return getUniqueFileName(new File(exportFilePath));
             } else {
                 throw new ReportServiceException("Export file path is null");
+            }
+        }
+        
+        public static OutputStream getFileOutputStream(File exportFilePath) {
+            try {
+                Path newFilePath = Paths.get(exportFilePath.getAbsolutePath());
+                return Files.newOutputStream(newFilePath);
+            } catch (IOException ex) {
+                throw new ReportServiceException(ex);
             }
         }
         

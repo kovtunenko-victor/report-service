@@ -1,6 +1,13 @@
 package ru.open.way4service.reportservice.services;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,8 +93,9 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
                 JasperPrint print = filler.fill(localProperties, connection);
                 logger.trace(String.format("Report id [%s] with request number [%s]. End fill jasper print", reportConfig.getReportId(), requestNumber));
                 exporter.setExporterInput(new SimpleExporterInput(print));
-                logger.trace(String.format("Report id [%s] with request number [%s]. File to export [%s]", reportConfig.getReportId(), requestNumber, ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath())));
-                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath())));
+                File exportFile = ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath());
+                logger.trace(String.format("Report id [%s] with request number [%s]. File to export [%s]", reportConfig.getReportId(), requestNumber, exportFile));
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(ReportConfig.Utils.getFileOutputStream(exportFile)));
                 logger.trace(String.format("Report id [%s] with request number [%s]. Start to export report", reportConfig.getReportId(), requestNumber));
                 exporter.exportReport();
                 logger.info(String.format("Report id [%s] with request number [%s]. Report exported", reportConfig.getReportId(), requestNumber));
