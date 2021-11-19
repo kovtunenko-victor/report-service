@@ -43,7 +43,7 @@ import ru.open.way4service.reportservice.models.VirtualaizerTypes;
 import ru.open.way4service.reportservice.repositories.target.TargetRepository;
 
 @Service("JasperReportExecutor")
-public class JasperReportExecutorServiceImpl implements ReportExecutorService {
+public class JasperReportExecutorServiceImpl implements ReportExecutorService<String> {
 
     private Logger logger = LoggerFactory.getLogger(JasperReportExecutorServiceImpl.class);
     @Autowired
@@ -52,7 +52,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
     @Override
     @Async("taskExecutor")
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Future<Boolean> executeReport(long requestNumber, ReportConfig reportConfig, Map<String, Object> properties) {
+    public Future<String> executeReport(long requestNumber, ReportConfig reportConfig, Map<String, Object> properties) {
         Map<String, Object> localProperties = new HashMap<>(properties);
         try {
             logger.trace(String.format("Report id [%s] with request number [%s]. Start build jasper report", reportConfig.getReportId(), requestNumber));
@@ -79,14 +79,14 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
             }
 
             logger.trace(String.format("Report id [%s] with request number [%s]. Start open db connection", reportConfig.getReportId(), requestNumber));
-
+            File exportFile = ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath());
+            
             try (Connection connection = targetRepository.getConnection()) {
                 logger.trace(String.format("Report id [%s] with request number [%s]. Start fill jasper print", reportConfig.getReportId(), requestNumber));
                 Thread enderThread = ReportTimeoutProvider.provideTimeout(Thread.currentThread(), reportConfig.getReportId(), requestNumber);
                 JasperPrint print = filler.fill(localProperties, connection);
                 logger.trace(String.format("Report id [%s] with request number [%s]. End fill jasper print", reportConfig.getReportId(), requestNumber));
                 exporter.setExporterInput(new SimpleExporterInput(print));
-                File exportFile = ReportConfig.Utils.getObjectExportFilePath(reportConfig.getExportFilePath());
                 logger.trace(String.format("Report id [%s] with request number [%s]. File to export [%s]", reportConfig.getReportId(), requestNumber, exportFile));
                 exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(ReportConfig.Utils.getFileOutputStream(exportFile)));
                 logger.trace(String.format("Report id [%s] with request number [%s]. Start to export report", reportConfig.getReportId(), requestNumber));
@@ -95,7 +95,7 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService {
                 enderThread.interrupt();
             }
 
-            return new AsyncResult<>(Boolean.TRUE);
+            return new AsyncResult<>(exportFile.getName());
         } catch (Throwable ex) {
             logger.error(String.format("Report id [%s] with request number [%s]. Exception at runtime report execute", reportConfig.getReportId(), requestNumber), ex);
             throw new ReportServiceException(ex);
