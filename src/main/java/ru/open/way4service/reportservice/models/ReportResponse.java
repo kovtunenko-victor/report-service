@@ -10,11 +10,11 @@ import lombok.Setter;
 public class ReportResponse {
     @Schema(description = "Request number for report")
     private long requestNumber;
-    @Schema(description = "Path to export file")
-    private String exportFilePath;
+    @Schema(description = "Unique name for export file")
+    private String exportFileName;
      
-    public ReportResponse(long requestNumber, String exportFilePath) {
+    public ReportResponse(long requestNumber, String exportFileName) {
         this.requestNumber = requestNumber;
-        this.exportFilePath = exportFilePath;
+        this.exportFileName = exportFileName;
     }
 }
