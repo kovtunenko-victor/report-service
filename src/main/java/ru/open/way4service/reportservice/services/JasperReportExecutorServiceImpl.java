@@ -1,6 +1,7 @@
 package ru.open.way4service.reportservice.services;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,12 +86,18 @@ public class JasperReportExecutorServiceImpl implements ReportExecutorService<St
                 logger.trace(String.format("Report id [%s] with request number [%s]. Start fill jasper print", reportConfig.getReportId(), requestNumber));
                 Thread enderThread = ReportTimeoutProvider.provideTimeout(Thread.currentThread(), reportConfig.getReportId(), requestNumber);
                 JasperPrint print = filler.fill(localProperties, connection);
+                
                 logger.trace(String.format("Report id [%s] with request number [%s]. End fill jasper print", reportConfig.getReportId(), requestNumber));
                 exporter.setExporterInput(new SimpleExporterInput(print));
+               
                 logger.trace(String.format("Report id [%s] with request number [%s]. File to export [%s]", reportConfig.getReportId(), requestNumber, exportFile));
-                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(ReportConfig.Utils.getFileOutputStream(exportFile)));
-                logger.trace(String.format("Report id [%s] with request number [%s]. Start to export report", reportConfig.getReportId(), requestNumber));
-                exporter.exportReport();
+                
+                try (OutputStream fileOutputStream = ReportConfig.Utils.getFileOutputStream(exportFile)) {
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(fileOutputStream));
+                    logger.trace(String.format("Report id [%s] with request number [%s]. Start to export report", reportConfig.getReportId(), requestNumber));
+                    exporter.exportReport();
+                }
+                
                 logger.info(String.format("Report id [%s] with request number [%s]. Report exported", reportConfig.getReportId(), requestNumber));
                 enderThread.interrupt();
             }
