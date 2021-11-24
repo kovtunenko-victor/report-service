@@ -1,6 +1,6 @@
 package ru.open.way4service.reportservice.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +25,9 @@ public class JasperReportExecutorServiceImplTest {
     
     @Test
     void methodExecuteReportShuldExportReport() throws ReportServiceException, InterruptedException, ExecutionException {
-        Future<Boolean> result = executorService.executeReport(0, buildReportConfig(), buildReportProperties());
-        assertThat(result.get()).isEqualTo(true);
+        Future<String> result = executorService.executeReport(0, buildReportConfig(), buildReportProperties());
+        String expected = "report_1";
+        assertTrue(result.get().contains(expected));
     }
     
     private ReportConfig buildReportConfig() {

@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import ru.open.way4service.reportservice.errors.ReportServiceException;
 import ru.open.way4service.reportservice.models.ReportConfig;
 import ru.open.way4service.reportservice.models.ReportRequest;
+import ru.open.way4service.reportservice.models.ReportResponse;
 import ru.open.way4service.reportservice.services.ReportExecutorService;
 import ru.open.way4service.reportservice.services.ReportLoaderService;
 
@@ -27,7 +28,7 @@ public class ReportController {
     private Logger logger = LoggerFactory.getLogger(ReportController.class);
 
     @Autowired
-    ReportExecutorService reportExecutor;
+    ReportExecutorService<String> reportExecutor;
 
     @Autowired
     ReportLoaderService reportLoaderService;
@@ -36,12 +37,12 @@ public class ReportController {
     @Operation(summary = "Provides the ability to run a report",
             responses = {@ApiResponse(responseCode = "200", description = "Report strat to execute"), @ApiResponse(responseCode = "503", description = "Thread pool is overflowing"), @ApiResponse(responseCode = "500", description = "Internal server error")},
             description = "Provides execute report. Report run in thread pool. Set reportId in service path and put in request body map of report properties")
-    public void executeReport(
+    public ReportResponse executeReport(
             @Parameter(name = "reportId", description = "Report id in service configuration DB", example="123") @PathVariable("reportId") long id,
             @Parameter(name = "settings", description = "Settings that include the path and name of the unloaded file and a map of parameters") @RequestBody ReportRequest settings) {
         try {
             long requestNumber = System.currentTimeMillis();
-            logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));;
+            logger.info(String.format("Start execute report by id [%s], request number [%s]", id, requestNumber));
             logger.info(String.format("Received report properties [%s]", settings.toString()));
             
             ReportConfig reportConfig = reportLoaderService.getReportConfig(id);
@@ -50,9 +51,11 @@ public class ReportController {
                 reportConfig.setExportFilePath(settings.getExportFilePath());
             }
             
-            reportExecutor.executeReport(requestNumber, reportConfig, settings.getProperties()).get();
+            String fileName = reportExecutor.executeReport(requestNumber, reportConfig, settings.getProperties()).get();
             
             logger.info(String.format("Send response for report by id [%s], request number [%s]", id, requestNumber));
+            
+            return new ReportResponse(requestNumber, fileName);
         } catch (Exception ex) {
             throw new ReportServiceException(ex);
         }
@@ -62,7 +65,7 @@ public class ReportController {
     @Operation(summary = "Provides the ability to run a report async",
             responses = {@ApiResponse(responseCode = "200", description = "Report strat to execute"), @ApiResponse(responseCode = "503", description = "Thread pool is overflowing"), @ApiResponse(responseCode = "500", description = "Internal server error")},
             description = "Provides execute report async. Report run in thread pool. Set reportId in service path and put in request body map of report properties")
-    public void executeReportAsync(
+    public ReportResponse executeReportAsync(
             @Parameter(name = "reportId", description = "Report id in service configuration DB", example = "123") @PathVariable("reportId") long id,
             @Parameter(name = "settings", description = "Settings that include the path and name of the unloaded file and a map of parameters") @RequestBody ReportRequest settings) {
         try {
@@ -81,6 +84,8 @@ public class ReportController {
             reportExecutor.executeReport(requestNumber, reportConfig, settings.getProperties());
             
             logger.info(String.format("Send response for report by id [%s], request number [%s]", id, requestNumber));
+            
+            return new ReportResponse(requestNumber, "");
         } catch (Exception ex) {
             throw new ReportServiceException(ex);
         }

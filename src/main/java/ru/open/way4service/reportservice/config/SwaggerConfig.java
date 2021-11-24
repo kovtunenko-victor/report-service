@@ -16,7 +16,7 @@ public class SwaggerConfig {
                 .info(
                         new Info()
                                 .title("report-service API doc")
-                                .version("0.0.1")
+                                .version("0.1.1")
                                 .contact(
                                         new Contact()
                                                 .email("viktor.kovtunenko@open.ru")
