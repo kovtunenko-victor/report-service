@@ -75,7 +75,13 @@ public class ReportConfig {
         
         public static File getObjectExportFilePath(String exportFilePath) throws ReportServiceException {
             if(exportFilePath != null) {
-                return getUniqueFileName(new File(exportFilePath));
+                File exportFile = new File(exportFilePath);
+                
+                if(exportFile!= null && !exportFile.exists() && exportFile.getParentFile() != null) {
+                    exportFile.getParentFile().mkdirs();
+                }
+                
+                return getUniqueFileName(exportFile);
             } else {
                 throw new ReportServiceException("Export file path is null");
             }
