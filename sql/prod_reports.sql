@@ -1,69 +1,28 @@
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1001, '/home/reports/testreports/pos_terminals.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.arm-udp-pos-terminals/pos_terminals_view.jasper','pos_terminals','NOT_USE',null);
-
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1002, '/home/reports/testreports/canceled-operations_view.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.canceled-operations/canceled-operations_view.jasper','canceled-operations_view','NOT_USE',null);
-
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1003, '/home/reports/testreports/devTrans_main.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.arm-udp-devTrans-main/devTrans_main.jasper','devTrans_main','NOT_USE',null);
-
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1004, '/home/reports/testreports/manual-operation_view.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.manual-operation/manual-operation_view.jasper','manual-operation_view','NOT_USE',null);
-
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1005, '/home/reports/testreports/chargebacks_view.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.chargebacks/chargebacks_view.jasper','chargebacks_view','NOT_USE',null);
-
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1006, '/home/reports/testreports/a2c_c2a_report_view_v2.xlsx','XLS'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-register/a2c_c2a_report_view_v2.jasper'
-                                                   ,'a2c_c2a_report_view_v2'
-                                                   ,'NOT_USE',null);
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1007, '/home/reports/testreports/ecomm_report_view_v2.xlsx','XLS'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-register/ecomm_report_view_v2.jasper'
-                                                   ,'ecomm_report_view_v2'
-                                                   ,'NOT_USE',null);
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1008, '/home/reports/testreports/client_report_main_view.xlsx','XLS'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-register/all/client_report_main_view.jasper'
-                                                   ,'client_report_main_view'
-                                                   ,'NOT_USE',null);
-------------------------------------------------------------------------------------------------------------------------------------------------------------
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1009, '/home/reports/testreports/client_act_view_chronopay.doc','DOC'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_chronopay.jasper'
-                                                   ,'client_act_view_chronopay'
-                                                   ,'NOT_USE',null);
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1010, '/home/reports/testreports/client_act_view_model_a2c.doc','DOC'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_model_a2c.jasper'
-                                                   ,'client_act_view_model_a2c'
-                                                   ,'NOT_USE',null);                                                 
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1011, '/home/reports/testreports/client_act_view_model_ecom_c2a.doc','DOC'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_model_ecom_c2a.jasper'
-                                                   ,'client_act_view_model_ecom_c2a'
-                                                   ,'NOT_USE',null);
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1012, '/home/reports/testreports/client_act_view_model_new.doc','DOC'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_model_new.jasper'
-                                                   ,'client_act_view_model_new'
-                                                   ,'NOT_USE',null);
-INSERT INTO public.reports (
-    id, export_file_path, export_type, tamplate_file_path, title, virtualaizer_type, virtualaizer_prop_id)
-    VALUES (1013, '/home/reports/testreports/client_act_view_payment_center.doc','DOC'
-                                                   ,'/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_payment_center.jasper'
-                                                   ,'client_act_view_payment_center'
-                                                   ,'NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1001,'/home/reports/pos_terminals.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.arm-udp-pos-terminals/pos_terminals_view.jasper','pos_terminals','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1,'d:\users\kovtunenko_ve\reports\report1\export\report_1.xlsx','XLS','d:\users\kovtunenko_ve\reports\report1\template\report1.jasper','test_report1','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (2,'d:\users\kovtunenko_ve\reports\report2\export\report_2.xlsx','XLS','d:\users\kovtunenko_ve\reports\report2\template\report2.jasper','test_report2','SWAP',1);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (3,'d:\users\kovtunenko_ve\reports\report2\export\report_2.xlsx','XLS','d:\users\kovtunenko_ve\reports\report2\template\report2.jasper','test_report3','SWAP',1);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (4,'d:\users\kovtunenko_ve\reports\report2\export\report_2.xlsx','XLS','d:\users\kovtunenko_ve\reports\report2\template\report2.jasper','test_report3','SWAP',1);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (5,'D:\Users\kovtunenko_ve\reports\out\pos_terminals.xlsx','XLS','P:\OWSWork\Prod\Data\Jasper reports\Bfko.reports.jrxml.arm-udp-pos-terminals\pos_terminals_view.jasper','test_pos_terminals','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (6,'/home/podmanusr/open_shares/prod/reports/testreports/report1.xlsx','XLS','/home/podmanusr/open_shares/prod/reports-template/report1/report1.jasper','test_report1','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1002,'/home/reports/canceled-operations_view.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.canceled-operations/canceled-operations_view.jasper','canceled-operations_view','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1003,'/home/reports/devTrans_main.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.arm-udp-devTrans-main/devTrans_main.jasper','devTrans_main','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1004,'/home/reports/manual-operation_view.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.manual-operation/manual-operation_view.jasper','manual-operation_view','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1005,'/home/reports/chargebacks_view.xlsx','XLS','/home/reports-template/Bfko.reports.jrxml.chargebacks/chargebacks_view.jasper','chargebacks_view','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1006,'/home/reports/testreports/a2c_c2a_report_view_v2.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.clients-operations-register/a2c_c2a_report_view_v2.jasper','a2c_c2a_report_view_v2','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1007,'/home/reports/testreports/ecomm_report_view_v2.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.clients-operations-register/ecomm_report_view_v2.jasper','ecomm_report_view_v2','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1008,'/home/reports/testreports/client_report_main_view.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.clients-operations-register/all/client_report_main_view.jasper','client_report_main_view','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1009,'/home/reports/testreports/client_act_view_chronopay.doc','DOC','/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_chronopay.jasper','client_act_view_chronopay','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1010,'/home/reports/testreports/client_act_view_model_a2c.doc','DOC','/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_model_a2c.jasper','client_act_view_model_a2c','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1011,'/home/reports/testreports/client_act_view_model_ecom_c2a.doc','DOC','/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_model_ecom_c2a.jasper','client_act_view_model_ecom_c2a','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1012,'/home/reports/testreports/client_act_view_model_new.doc','DOC','/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_model_new.jasper','client_act_view_model_new','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1013,'/home/reports/testreports/client_act_view_payment_center.doc','DOC','/home/reports-template/BFKO.reports.jrxml.clients-operations-act/client_act_view_payment_center.jasper','client_act_view_payment_center','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (8,'D:\Users\kovtunenko_ve\reports\out\client_report_main_view.xlsx','XLS','P:\OWSWork\Prod\Data\Jasper reports\BFKO.reports.jrxml.clients-operations-register\all\client_report_main_view.jasper','client_report_main_view','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (7,'/home/reports/testreports/report1.xlsx','XLS','/home/reports-template/report1/report1.jasper','test_report1','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1014,'/home/reports/testreports/client_act_ext.docx','DOC','/home/reports-template/Bfko.reports.jrxml.clients-total-act/Client_Act_Ext.jasper','client_act_ext','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (9,'D:\Users\kovtunenko_ve\reports\out\ecomm_report_view_v2.xlsx','XLS','P:\OWSWork\Prod\Data\Jasper reports\BFKO.reports.jrxml.clients-operations-register\ecomm_report_view_v2.jasper','ecomm_report_view_v2','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (10,'D:\Users\kovtunenko_ve\reports\out\a2c_c2a_report_view_v2.xlsx','XLS','P:\OWSWork\Prod\Data\Jasper reports\BFKO.reports.jrxml.clients-operations-register\a2c_c2a_report_view_v2.jasper','a2c_c2a_report_view_v2','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1015,'/home/reports/testreports/gl_turnover.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.gl-turnover/gl_turnover.jasper','gl_turnover','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1016,'/home/reports/testreports/terminals_contacts.xlsx','XLS','/home/reports-template/BFKO.reports.jrxml.terminals-contacts/terminals-contacts_view.jasper','terminals_contacts','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (11,'D:\Users\kovtunenko_ve\reports\out\terminals_contacts.xlsx','XLS','P:\OWSWork\Prod\Data\Jasper reports\BFKO.reports.jrxml.terminals-contacts\terminals-contacts_view.jasper','terminals_contacts_win','NOT_USE',null);
+Insert into "public"."reports" ("id","export_file_path","export_type","tamplate_file_path","title","virtualaizer_type","virtualaizer_prop_id") values (1017,'/home/reports/testreports/act_npf_otkritie.docx','DOC','/home/reports-template/bfko.reports.jrxml.custom.nfp_otkritie-act/act_npf_otkritie.jasper','act_npf_otkritie','NOT_USE',null);

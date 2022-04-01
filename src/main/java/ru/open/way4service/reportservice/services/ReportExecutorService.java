@@ -5,6 +5,6 @@ import java.util.concurrent.Future;
 
 import ru.open.way4service.reportservice.models.ReportConfig;
 
-public interface ReportExecutorService {
-    public Future<Boolean> executeReport(long requestNumber, ReportConfig reportConfig, Map<String, Object> properties);
+public interface ReportExecutorService <T> {
+    public Future<T> executeReport(long requestNumber, ReportConfig reportConfig, Map<String, Object> properties);
 }
